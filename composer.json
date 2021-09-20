@@ -18,7 +18,9 @@
         "php": "^7.4|^8.0",
         "illuminate/support": "^8.0",
         "kucoin/kucoin-php-sdk": "~1.1.0",
-        "brunofalcaodev/nidavellir-cube": "dev-master"
+        "codenix-sv/coingecko-api": "^1.0",
+        "guzzlehttp/guzzle": "^7.0.1",
+        "brunofalcaodev/nidavellir-trading": "dev-master"
     },
     "autoload": {
         "psr-4": {

@@ -20,50 +20,8 @@ class CoingeckoService implements Pollable
     protected $auth;
     protected $response;
 
-    public function __construct()
-    {
-        //
-    }
-
-    public static function new(...$args)
-    {
-        return new self(...$args);
-    }
-
-    public function withApi(Api $api)
-    {
-        $this->api = $api;
-
-        return $this;
-    }
-
-    public function connect()
-    {
-        return $this;
-    }
-
-    public function response()
-    {
-        return $this->response;
-    }
-
-    public function canExecute()
-    {
-        return true;
-    }
-
-    public function execute(callable $function)
-    {
-        try {
-            $this->response = $function();
-        } catch (\Exception $e) {
-            // Exception saved in the crawlers error log table.
-            throw new $e();
-        }
-    }
-
     // ***** Api operations *****
-    public function allTickers()
+    public function allTokens()
     {
         $client = new CoinGeckoClient();
         $this->execute(function () use ($client) {
