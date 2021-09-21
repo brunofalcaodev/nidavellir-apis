@@ -100,6 +100,7 @@ class KucoinService implements Pollable
         $this->execute(function () {
             $this->connect();
             $symbol = new Symbol($this->auth);
+
             return $symbol->getAllTickers();
         });
 
