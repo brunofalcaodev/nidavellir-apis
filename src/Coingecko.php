@@ -3,7 +3,7 @@
 namespace Nidavellir\Apis;
 
 use Codenixsv\CoinGeckoApi\CoinGeckoClient;
-use Nidavellir\Abstracts\Contracts\Pollable;
+use Nidavellir\Abstracts\Classes\AbstractCrawler;
 use Nidavellir\Cube\Models\Api;
 
 class Coingecko
@@ -14,28 +14,20 @@ class Coingecko
     }
 }
 
-class CoingeckoService implements Pollable
+class CoingeckoService extends AbstractCrawler
 {
-    protected $api;
-    protected $auth;
-    protected $response;
+    public static function new(...$args)
+    {
+        return new self(...$args);
+    }
 
     // ***** Api operations *****
+
     public function allTokens()
     {
         $client = new CoinGeckoClient();
         $this->execute(function () use ($client) {
             return $client->coins()->getList();
-        });
-
-        return $this;
-    }
-
-    public function allMarkets(array $params = [], string $currency = 'usd')
-    {
-        $client = new CoinGeckoClient();
-        $this->execute(function () use ($client, $currency, $params) {
-            return $client->coins()->getMarkets($currency, $params);
         });
 
         return $this;

@@ -5,10 +5,10 @@ namespace Nidavellir\Apis;
 use KuCoin\SDK\Auth;
 use KuCoin\SDK\KuCoinApi;
 use KuCoin\SDK\PublicApi\Symbol;
+use Nidavellir\Abstracts\Classes\AbstractCrawler;
 use Nidavellir\Abstracts\Contracts\Pollable;
 use Nidavellir\Cube\Models\Api;
 use Nidavellir\Cube\Models\Exchange;
-use Nidavellir\Exceptions\ApiException;
 
 class Kucoin
 {
@@ -18,7 +18,7 @@ class Kucoin
     }
 }
 
-class KucoinService implements Pollable
+class KucoinService extends AbstractCrawler implements Pollable
 {
     protected $api;
     protected $auth;
@@ -28,42 +28,14 @@ class KucoinService implements Pollable
     public function __construct()
     {
         if (env('KUCOIN_SANDBOX') == '1') {
-            KuCoinApi::setBaseUri(Exchange::firstWhere('canonical', 'kucoin')->sandbox_api_url);
+            KuCoinApi::setBaseUri(Exchange::firstWhere('canonical', 'kucoin')
+                                          ->sandbox_api_url);
         }
     }
 
     public static function new(...$args)
     {
         return new self(...$args);
-    }
-
-    public function withApi(Api $api)
-    {
-        $this->api = $api;
-
-        return $this;
-    }
-
-    public function response()
-    {
-        return $this->response;
-    }
-
-    public function execute(callable $function)
-    {
-        try {
-            $this->response = $function();
-        } catch (ApiException $e) {
-            // Exception saved in the crawlers error log table.
-            throw new $e();
-        }
-    }
-
-    public function asSystem()
-    {
-        $this->system = true;
-
-        return $this;
     }
 
     public function connect()
